@@ -176,7 +176,7 @@ function! s:GetGitSiteType(git_remote_url) abort
   return s:not_supported
 endfunction
 
-function! vim_git_browse#GitBrowse(visual_mode) abort
+function! vim_git_browse#GitBrowse(visual_mode, ...) abort
   echo '[vim-git-browse] Opening git...'
   let l:git_root_path = s:GetGitRootPath()
   if l:git_root_path is v:null
@@ -185,7 +185,7 @@ function! vim_git_browse#GitBrowse(visual_mode) abort
   endif
 
   let l:git_remote_url = s:GetGitRemoteUrl()
-  let l:branch_name = s:GetCurrentBranchName()
+  let l:branch_name = get(a:, 1, s:GetCurrentBranchName())
 
   call s:OpenGitRepositoryInBrowser(a:visual_mode, l:git_remote_url, l:branch_name, l:git_root_path)
 endfunction
