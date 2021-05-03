@@ -263,5 +263,23 @@ function! vim_git_browse#GitOpenPullRequest() abort
   endif
 endfunction
 
+function! vim_git_browse#GitOpenPipelines() abort
+  let l:git_remote_url = s:GetGitRemoteUrl()
+  let l:git_site_type = s:GetGitSiteType(l:git_remote_url)
+  let l:git_branch_name = s:GetCurrentBranchName()
+
+  let l:git_url = l:git_remote_url
+  if l:git_site_type == s:gitlab_value
+    let l:git_url = l:git_url . '/pipelines?scope=branches&ref=' . l:git_branch_name
+  elseif l:git_site_type == s:github_value
+    let l:git_url = l:git_url . '/actions?query=branch%3A' . l:git_branch_name
+  else
+    echo '[vim-git-browse] Git site not supported'
+    return
+  endif
+
+  call s:OpenUrl(l:git_url)
+endfunction
+
 let &cpo = s:cpo_save
 unlet s:cpo_save
