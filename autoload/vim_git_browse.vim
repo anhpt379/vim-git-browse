@@ -281,5 +281,9 @@ function! vim_git_browse#GitOpenPipelines() abort
   call s:OpenUrl(l:git_url)
 endfunction
 
+function! vim_git_browse#GitOpenRepo() abort
+  call s:OpenUrl(s:GetGitRemoteUrl())
+endfunction
+
 let &cpo = s:cpo_save
 unlet s:cpo_save
