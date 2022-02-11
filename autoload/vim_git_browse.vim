@@ -149,8 +149,6 @@ function! s:OpenGitFileInBrowser(git_remote_url, branch_name, relative_path, vis
 
     call s:OpenUrl(l:git_url)
   else
-    let l:line = line('.')
-    let l:git_url = s:GetGitUrlWithLine(l:git_url, l:line, l:line, l:git_site_type)
 
     call s:OpenUrl(l:git_url)
   endif
