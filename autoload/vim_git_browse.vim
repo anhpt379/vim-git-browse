@@ -85,7 +85,7 @@ function! s:GetGitLabMergeRequestUrl(git_remote_url, commit_hash) abort
   let l:merge_request_id = system('echo ' . l:merge_request . ' | awk -F''/'' ''{print $3}'' | tr -d "\n"')
   let l:git_remote_url = a:git_remote_url
 
-  let l:merge_request_url = l:git_remote_url . '/merge_requests/' . l:merge_request_id
+  let l:merge_request_url = l:git_remote_url . '/-/merge_requests/' . l:merge_request_id
 
   return l:merge_request_url
 endfunction
@@ -265,10 +265,12 @@ function! vim_git_browse#GitOpenPipelines() abort
   let l:git_remote_url = s:GetGitRemoteUrl()
   let l:git_site_type = s:GetGitSiteType(l:git_remote_url)
   let l:git_branch_name = s:GetCurrentBranchName()
+  let l:latest_commit_hash = s:GetLatestCommitHashRemote(l:git_branch_name)
 
   let l:git_url = l:git_remote_url
   if l:git_site_type == s:gitlab_value
-    let l:git_url = l:git_url . '/pipelines?scope=branches&ref=' . l:git_branch_name
+    let l:merge_request_url = s:GetGitLabMergeRequestUrl(l:git_remote_url, l:latest_commit_hash)
+    let l:git_url = l:merge_request_url . '/pipelines'
   elseif l:git_site_type == s:github_value
     let l:git_url = l:git_url . '/actions?query=branch%3A' . l:git_branch_name
   else
